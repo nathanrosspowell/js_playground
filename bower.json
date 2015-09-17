@@ -1,0 +1,23 @@
+{
+  "name": "js_playground",
+  "version": "0.0.0",
+  "homepage": "https://github.com/nathanrosspowell/js_playground",
+  "authors": [
+    "Nathan Ross Powell <nathanrosspowell@gmail.com>"
+  ],
+  "description": "A test of playground.js",
+  "main": "index.js",
+  "keywords": [
+    "playground.js"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {}
+}

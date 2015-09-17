@@ -1,0 +1,33 @@
+{
+  "name": "js_playground",
+  "version": "1.0.0",
+  "description": "A test of playground.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nathanrosspowell/js_playground.git"
+  },
+  "keywords": [
+    "playground.js"
+  ],
+  "author": "Nathan Ross Powell <nathanrosspowell@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nathanrosspowell/js_playground/issues"
+  },
+  "homepage": "https://github.com/nathanrosspowell/js_playground",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-clean": "^0.6.0",
+    "grunt-contrib-connect": "^0.11.2",
+    "grunt-contrib-copy": "^0.8.1",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-gh-pages": "^0.10.0",
+    "grunt-replace": "^0.11.0",
+    "load-grunt-tasks": "^3.2.0",
+    "time-grunt": "^1.2.1"
+  }
+}
