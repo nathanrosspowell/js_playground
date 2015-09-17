@@ -30,7 +30,7 @@ ENGINE.Game = {
 
     /* translate drawing pointer to the center of screen */
 
-    layer.translate(app.center.x, app.center.y);
+    layer.translate(app.center.x, app.center.y - 30);
 
     /* set rotation point of all sprites/images to their center */
 
@@ -42,15 +42,15 @@ ENGINE.Game = {
 
     /* draw sprite */
 
-    layer.drawImage(app.images.giana, 0, 0);
+    layer.drawImage(app.images.car_black_1, 0, 0);
 
     /* draw text - this is not affected by align */
 
     layer
       .fillStyle("#fff")
       .textAlign("center")
-      .fillText("Do you remember me?", 0, 24)
-      .fillText("Find me in script/Game.js", 0, 48);
+      .fillText("Do you remember me?", 0, 84)
+      .fillText("Find me in script/Game.js", 0, 108);
 
     /* restore drawing pointer to its previous state */
 
