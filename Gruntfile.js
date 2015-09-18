@@ -112,6 +112,35 @@ module.exports = function(grunt) {
         }
     },
 
+    prettify: {
+      options: {
+        condense: true,
+        indent: 2,
+        indent_char: ' ',
+        wrap_line_length: 78,
+        brace_style: 'expand',
+        unformatted: ['a', 'sub', 'sup', 'b', 'i', 'u']
+      },
+      // Prettify a directory of files 
+      js_playground: {
+        expand: true,
+        cwd: '<%= config.temp %>/',
+        src: [ '**/*.html' ],
+        dest: '<%= config.temp %>',
+      }
+    },
+
+    uglify: {
+      js_playground: {
+        files: [{
+          expand: true,
+          cwd: '<%= config.temp %>/',
+          src: [ '**/*.js' ],
+          dest: '<%= config.temp %>',
+        }]
+      }
+    },
+
     clean: [
       '<%= config.dist %>/**/*.*',
       '<%= config.temp %>/**/*.*',
@@ -124,10 +153,14 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-replace');
   grunt.loadNpmTasks('grunt-gh-pages');
+  grunt.loadNpmTasks('grunt-prettify');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
 
   grunt.registerTask('build', [
       'clean',
       'replace', 
+      'prettify',
+      'uglify',
       'copy'
   ]);
 
