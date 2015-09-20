@@ -21,6 +21,7 @@ ENGINE.Game = {
           "y" : 0
       }
   },
+  keyPressCount: 0,
 
   create: function() {
 
@@ -56,9 +57,13 @@ ENGINE.Game = {
     if ( event.key in this.movement ){
         this.currentMove =  this.movement[ event.key ];
     }
+    this.keyPressCount += 1;
   },
   
   keyup: function(event) {
-      this.currentMove = null;
+      this.keyPressCount -=1;
+      if ( this.keyPressCount === 0 ) {
+        this.currentMove = null;
+      }
   }
 };
