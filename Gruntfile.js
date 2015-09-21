@@ -160,7 +160,7 @@ module.exports = function(grunt) {
       'clean',
       'replace', 
       'prettify',
-      'uglify',
+      //'uglify',
       'copy'
   ]);
 
