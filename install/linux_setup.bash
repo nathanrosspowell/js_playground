@@ -1,6 +1,6 @@
 #!/bin/bash
 # node.
-npm install
+sudo npm install
 # bower.
 bower install
 # run standard grunt.
