@@ -1,5 +1,5 @@
 language: node_js
 sudo: required
 before_install: sudo bash install/linux_dependencies.bash
-install: sudo bash install/linux_setup.bash
+install: bash install/linux_setup.bash
 before_script: grunt
