@@ -1,6 +1,8 @@
 ENGINE.Car = function() {
   this.posX = 0;
   this.posY = 0;
+  this.rotation = 0.0;
+  this.acceleration = 0;
   this.currentMove = null;
   this.movement = {
       "w" : {
@@ -22,11 +24,17 @@ ENGINE.Car = function() {
   };
   this.keyPressCount = 0;
   this.step = function(dt) {
+    if ( this.keyPressCount > 0 ) {
+        this.acceleration += 0.1;
+    }
+    else {
+        this.acceleration -= 0.1;
+    }
+    this.acceleration = Math.min(Math.max(this.acceleration, 0), 10.0);
     var move = this.currentMove;
     if ( move !== null ) {
-      var speedScale = 4;
-      this.posX += speedScale * move.x;
-      this.posY += speedScale * move.y;
+      this.posX += this.acceleration * move.x;
+      this.posY += this.acceleration * move.y;
     }
   };
 
@@ -57,7 +65,6 @@ ENGINE.Car = function() {
   this.keyup = function(event) {
       this.keyPressCount -=1;
       if ( this.keyPressCount === 0 ) {
-        this.currentMove = null;
       }
   };
 };
