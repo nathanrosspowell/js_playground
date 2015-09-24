@@ -1,70 +1,87 @@
 ENGINE.Car = function() {
-  this.posX = 0;
-  this.posY = 0;
-  this.rotation = 0.0;
-  this.acceleration = 0;
-  this.currentMove = null;
-  this.movement = {
-      "w" : {
-          "x" : 0,
-          "y" : -1
-      },
-      "s" : {
-          "x" : 0,
-          "y" : 1
-      },
-      "a" : {
-          "x" : -1,
-          "y" : 0 
-      },
-      "d" : {
-          "x" : 1,
-          "y" : 0
-      }
+  this.controls = {
+      'w' : 'forward',
+      's' : 'back',
+      'a' : 'left',
+      'd' : 'right'
   };
+  this.heldControls = {
+      forward : false,
+      back : false,
+      left : false,
+      right : false
+  };
+  this.pos = new Victor(0,0);
+  this.turnAngle = 0.0;
+  this.rotation = 0.0;
+  this.speed = 0.0;
+  this.acceleration = 0;
+  this.brake = 0;
+  this.currentMove = null;
   this.keyPressCount = 0;
   this.step = function(dt) {
-    if ( this.keyPressCount > 0 ) {
-        this.acceleration += 0.1;
+    this.calculateMovement(dt);
+    this.applyMovement(dt);
+  };
+  this.calculateMovement = function(dt) {
+    var accelerationMax = 20.0;
+    var breakMax = 200.0;
+    var turnMax = 30.0;
+    var accelerationScale = 0.5 * dt;
+    var coasting = 10.0 * dt;
+    var turnSpeed = 28 * dt;
+    if ( this.heldControls.forward ) {
+      this.acceleration += accelerationScale;
+    } 
+    else {
+      this.acceleration -= coasting;
+    }
+    this.acceleration = Math.min(Math.max(this.acceleration, 0 ), accelerationMax);
+    if ( this.heldControls.left ) {
+      this.turnAngle -= turnSpeed;
+    } 
+    else if ( this.heldControls.right ){
+      this.turnAngle += turnSpeed;
     }
     else {
-        this.acceleration -= 0.1;
+      this.turnAngle = 0;
     }
-    this.acceleration = Math.min(Math.max(this.acceleration, 0), 10.0);
-    var move = this.currentMove;
-    if ( move !== null ) {
-      this.posX += this.acceleration * move.x;
-      this.posY += this.acceleration * move.y;
-    }
+    this.turnAngle= Math.min(Math.max(this.turnAngle, turnMax * -1 ), turnMax);
   };
-
+  this.applyMovement = function(dt) {
+    var maxSpeed = 50;
+    if ( this.acceleration > 0 ) {
+        this.speed += this.acceleration * dt
+    }
+    else {
+        this.speed -= 20 * dt
+    }
+    this.speed = Math.min(Math.max(this.speed, 0 ), maxSpeed);
+    this.rotation += this.turnAngle * dt;
+    this.pos.x -= Math.sin(this.rotation) * this.speed;
+    this.pos.y += Math.cos(this.rotation) * this.speed;
+    console.log( this.acceleration, this.speed, this.rotation, this.pos.x, this.pos.y );
+  };
   this.render = function(state) {
     var app = state.app; // get reference to the application
     var layer = state.app.layer; // get reference to drawing surface
-    layer.clear("#222"); //clear screen 
-    layer.save(); // save all setting of drawing pointer
-    layer.translate(app.center.x + this.posX, app.center.y + this.posY); //translate drawing pointer to the center of screen 
-    layer.align(0.5, 0.5); //set rotation point of all sprites/images to their center 
-    layer.scale(3, 3); //tell the drawing pointer to scale everything x 3 
-    layer.drawImage(app.images.car_black_1, 0, 0); //draw sprite 
-    layer //draw text - this is not affected by align 
-      .fillStyle("#fff")
-      .textAlign("center")
-      .fillText("Do you remember me?", 0, 84)
-      .fillText("Find me in script/Game.js", 0, 108);
-    layer.restore(); //restore drawing pointer to its previous state 
+    layer.clear("#222") //clear screen 
+         .save() // save all setting of drawing pointer
+         .translate(app.center.x + this.pos.x, app.center.y + this.pos.y) //translate drawing pointer to the center of screen 
+         .align(0.5, 0.5) //set rotation point of all sprites/images to their center 
+         .rotate(this.rotation + Math.PI)
+         .scale(0.75, 0.75) 
+         .drawImage(app.images.car_black_1, 0, 0) //draw sprite 
+         .restore(); //restore drawing pointer to its previous state 
   },
-
   this.keydown = function(event) {
-    if ( event.key in this.movement ){
-        this.currentMove =  this.movement[ event.key ];
+    if ( event.key in this.controls ) {
+       this.heldControls[ this.controls[event.key] ] = true; 
     }
-    this.keyPressCount += 1;
   };
-  
   this.keyup = function(event) {
-      this.keyPressCount -=1;
-      if ( this.keyPressCount === 0 ) {
-      }
+    if ( event.key in this.controls ) {
+       this.heldControls[ this.controls[event.key] ] = false;
+    }
   };
 };
